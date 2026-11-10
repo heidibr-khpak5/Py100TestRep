@@ -94,11 +94,12 @@ while (True):
         # HB: structured error handling
 # Version .1 working to here
         print(student_first_name, student_last_name,course_name)
-        student_data = {"FirstName": student_data[0], \
-                        "LastName": student_data[1], "CourseName": student_data[2].strip()}
-        students.append(student_data)
-        print(f"You have registered {student_first_name} {student_last_name} "
-              f"for {course_name}.")
+
+        # student_data = {"FirstName": student_data[0], \
+        #                 "LastName": student_data[1], "CourseName": student_data[2].strip()}
+        # students.append(student_data)
+        # print(f"You have registered {student_first_name} {student_last_name} "
+        #       f"for {course_name}.")
         continue
 
     # Present the current data
