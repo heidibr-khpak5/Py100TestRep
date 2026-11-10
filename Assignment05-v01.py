@@ -31,7 +31,6 @@ students: list = []  # a table of student data
 file = None  # Holds a reference to an opened file.
 menu_choice: str  # Hold the choice made by the user.
 
-
 # When the program starts, read the file data into a list of lists (table)
 # Extract the data from the file
 # HB add structured error handling for file open,
@@ -40,11 +39,11 @@ try:
     for row in file.readlines():
         # Transform the data from the file
         student_data = row.split(',')
-        student_data = {"FirstName":student_data[0], \
-            "LastName":student_data[1], "CourseName":student_data[2].strip()}
+        student_data = {"FirstName": student_data[0], \
+                        "LastName": student_data[1], "CourseName": student_data[2].strip()}
         # Load it into our collection (list of lists)
         students.append(student_data)
-    #print(students)
+    # print(students)
 except FileNotFoundError as e:
     print("No file found.")
     print("--Technical Error Message--")
@@ -61,41 +60,55 @@ while (True):
     print(MENU)
     menu_choice = input("What would you like to do: ")
 
-    # Input user data
+    # Input user data and check that name does not incule numbers
     if menu_choice == "1":  # This will not work if it is an integer!
-        try:
-            student_first_name = input("Enter the student's first name: ")
-            if not student_first_name.isalpha():
-                raise ValueError("The first name should not contain numbers.")
+        while True:
+            try:
+                student_first_name = input("Enter the student's first name: ")
+                if not student_first_name.isalpha():
+                    raise ValueError("The first name should not contain numbers.")
+                break
+            except ValueError as e:
+                print(e)
+                print("--Technical Error Message --")
+                print(e.__doc__)
+                print(e.__str__())
 
-            student_last_name = input("Enter the student's last name: ")
-            if not student_last_name.isalpha():
-                raise ValueError("The last name should not contain numbers.")
-            student_data.append()
-        except ValueError as e:
-            print(e)
-            print("--Technical Error Message --")
-            print(e.__doc__)
-            print(e.__str__())
-        # HB: structured error handling
+            # except Exception as e:
+            # print(e)
+            # print("There was an error.")
+        while True:
+            try:
+                student_last_name = input("Enter the student's last name: ")
+                if not student_last_name.isalpha():
+                    raise ValueError("The last name should not contain numbers.")
+                break
+            except ValueError as e:
+                print(e)
+                print("--Technical Error Message --")
+                print(e.__doc__)
+                print(e.__str__())
 
-        # HB: structured error handling
         course_name = input("Please enter the name of the course: ")
 
-        student_data = {"FirstName":student_data[0], \
-            "LastName":student_data[1], "CourseName":student_data[2].strip()}
+        # HB: structured error handling
+# Version .1 working to here
+        print(student_first_name, student_last_name,course_name)
+        student_data = {"FirstName": student_data[0], \
+                        "LastName": student_data[1], "CourseName": student_data[2].strip()}
         students.append(student_data)
-        print(f"You have registered {student_first_name} {student_last_name} for {course_name}.")
+        print(f"You have registered {student_first_name} {student_last_name} "
+              f"for {course_name}.")
         continue
 
     # Present the current data
     elif menu_choice == "2":
 
         # Process the data to create and display a custom message
-        print("-"*50)
+        print("-" * 50)
         for student in students:
             print(f"Student {student[0]} {student[1]} is enrolled in {student[2]}")
-        print("-"*50)
+        print("-" * 50)
         continue
 
     # Save the data to a file
@@ -120,6 +133,6 @@ while (True):
     else:
         print("Please only choose option 1, 2, 3, or 4")
 
-    #HB : Do we want a finally clean up here?
+    # HB : Do we want a finally clean up here?
 
 print("Program Ended")
