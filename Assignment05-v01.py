@@ -26,7 +26,7 @@ FILE_NAME: str = "Enrollments.csv"
 student_first_name: str = ''  # Holds the first name of a student entered by the user.
 student_last_name: str = ''  # Holds the last name of a student entered by the user.
 course_name: str = ''  # Holds the name of a course entered by the user.
-student_data: list = []  # one row of student data (TODO: Change this to a Dictionary)
+student_data: dict = {}  # one row of student data as dictionary
 students: list = []  # a table of student data
 file = None  # Holds a reference to an opened file.
 menu_choice: str  # Hold the choice made by the user.
@@ -35,13 +35,20 @@ menu_choice: str  # Hold the choice made by the user.
 # When the program starts, read the file data into a list of lists (table)
 # Extract the data from the file
 # HB add structured error handling for file open,
-file = open(FILE_NAME, "r")
-for row in file.readlines():
-    # Transform the data from the file
-    student_data = row.split(',')
-    student_data = [student_data[0], student_data[1], student_data[2].strip()]
-    # Load it into our collection (list of lists)
-    students.append(student_data)
+try:
+    file = open(FILE_NAME, "r")
+    for row in file.readlines():
+        # Transform the data from the file
+        student_data = row.split(',')
+        student_data = {"FirstName":student_data[0], \
+            "LastName":student_data[1], "CourseName":student_data[2].strip()}
+        # Load it into our collection (list of lists)
+        students.append(student_data)
+    #print(students)
+except FileNotFoundError as e:
+    print("No file found.")
+    print("--Technical Error Message--")
+    print(e, e.__doc__, type(e), sep='\n')
 
 # Check if a file object exists and is still open
 if file is not None and file.closed == False:
@@ -56,13 +63,27 @@ while (True):
 
     # Input user data
     if menu_choice == "1":  # This will not work if it is an integer!
-        student_first_name = input("Enter the student's first name: ")
+        try:
+            student_first_name = input("Enter the student's first name: ")
+            if not student_first_name.isalpha():
+                raise ValueError("The first name should not contain numbers.")
+
+            student_last_name = input("Enter the student's last name: ")
+            if not student_last_name.isalpha():
+                raise ValueError("The last name should not contain numbers.")
+            student_data.append()
+        except ValueError as e:
+            print(e)
+            print("--Technical Error Message --")
+            print(e.__doc__)
+            print(e.__str__())
         # HB: structured error handling
-        student_last_name = input("Enter the student's last name: ")
+
         # HB: structured error handling
         course_name = input("Please enter the name of the course: ")
 
-        student_data = [student_first_name,student_last_name,course_name]
+        student_data = {"FirstName":student_data[0], \
+            "LastName":student_data[1], "CourseName":student_data[2].strip()}
         students.append(student_data)
         print(f"You have registered {student_first_name} {student_last_name} for {course_name}.")
         continue
